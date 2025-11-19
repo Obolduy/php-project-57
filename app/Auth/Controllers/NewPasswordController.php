@@ -1,9 +1,9 @@
 <?php
 
-namespace app\Auth\Controllers;
+namespace App\Auth\Controllers;
 
-use app\Framework\Controllers\Controller;
-use app\User\Models\User;
+use App\Framework\Controllers\Controller;
+use App\User\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

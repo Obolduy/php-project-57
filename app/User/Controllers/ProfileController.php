@@ -1,9 +1,9 @@
 <?php
 
-namespace app\User\Controllers;
+namespace App\User\Controllers;
 
-use app\Framework\Controllers\Controller;
-use app\User\Requests\ProfileUpdateRequest;
+use App\Framework\Controllers\Controller;
+use App\User\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

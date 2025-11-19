@@ -1,8 +1,8 @@
 <?php
 
-namespace app\Auth\Controllers;
+namespace App\Auth\Controllers;
 
-use app\Framework\Controllers\Controller;
+use App\Framework\Controllers\Controller;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;

@@ -1,6 +1,6 @@
 <?php
 
-use app\User\Controllers\ProfileController;
+use App\User\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
