@@ -21,7 +21,6 @@
                     name="name" 
                     value="{{ old('name', $task->name) }}"
                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition duration-150 ease-in-out @error('name') border-red-500 @enderror"
-                    required 
                     autofocus
                     placeholder="Введите название задачи"
                 >
@@ -54,7 +53,6 @@
                     id="status_id" 
                     name="status_id"
                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition duration-150 ease-in-out @error('status_id') border-red-500 @enderror"
-                    required
                 >
                     <option value="">{{ __('tasks.select_status') }}</option>
                     @foreach ($statuses as $status)
