@@ -50,4 +50,4 @@ stdout_logfile=/var/log/nginx.out.log" > /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
 
-CMD ["bash", "-c", "php artisan migrate:refresh --seed --force && /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"]
+CMD ["bash", "-c", "php artisan migrate --force && /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"]
