@@ -32,7 +32,7 @@
                     >
                 </div>
                 @error('name')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    <div class="text-rose-600">{{ $message }}</div>
                 @enderror
             </div>
 

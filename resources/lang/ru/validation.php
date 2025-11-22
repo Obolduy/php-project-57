@@ -133,7 +133,7 @@ return [
     'prohibited_unless' => 'Значение поля :attribute запрещено, если :other не состоит в :values.',
     'prohibits' => 'Значение поля :attribute запрещает присутствие :other.',
     'regex' => 'Значение поля :attribute имеет ошибочный формат.',
-    'required' => 'Поле :attribute обязательно для заполнения.',
+    'required' => 'Это обязательное поле',
     'required_array_keys' => 'Массив в поле :attribute должен иметь ключи: :values.',
     'required_if' => 'Поле :attribute обязательно для заполнения, когда :other равно :value.',
     'required_if_accepted' => 'Поле :attribute обязательно для заполнения, когда :other принято.',

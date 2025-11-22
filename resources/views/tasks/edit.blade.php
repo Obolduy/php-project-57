@@ -26,7 +26,7 @@
                     placeholder="Введите название задачи"
                 >
                 @error('name')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    <div class="text-rose-600">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -42,7 +42,7 @@
                     placeholder="Введите описание задачи (необязательно)"
                 >{{ old('description', $task->description) }}</textarea>
                 @error('description')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    <div class="text-rose-600">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -64,7 +64,7 @@
                     @endforeach
                 </select>
                 @error('status_id')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    <div class="text-rose-600">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -85,7 +85,7 @@
                     @endforeach
                 </select>
                 @error('assigned_to_id')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    <div class="text-rose-600">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -110,7 +110,7 @@
                     Удерживайте Ctrl (Cmd на Mac) для выбора нескольких меток
                 </p>
                 @error('labels')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    <div class="text-rose-600">{{ $message }}</div>
                 @enderror
             </div>
 
