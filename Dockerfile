@@ -1,4 +1,4 @@
-FROM php:8.4-cli
+FROM php:8.4-fpm
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
@@ -22,4 +22,4 @@ RUN npm run build
 
 RUN > database/database.sqlite
 
-CMD ["bash", "-c", "php artisan migrate:refresh --seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["bash", "-c", "php artisan migrate:refresh --seed --force && php-fpm"]
