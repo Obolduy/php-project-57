@@ -1,0 +1,29 @@
+<?php
+
+return [
+    'title' => 'Tasks',
+    'menu' => 'Tasks',
+    'create' => 'Create task',
+    'edit' => 'Edit',
+    'update' => 'Update',
+    'delete' => 'Delete',
+    'cancel' => 'Cancel',
+    'view' => 'View',
+    'id' => 'ID',
+    'name' => 'Name',
+    'description' => 'Description',
+    'status' => 'Status',
+    'creator' => 'Creator',
+    'assigned_to' => 'Assigned to',
+    'created_at' => 'Created at',
+    'actions' => 'Actions',
+    'no_tasks' => 'No tasks found',
+    'created' => 'Task successfully created',
+    'updated' => 'Task successfully updated',
+    'deleted' => 'Task successfully deleted',
+    'cannot_delete' => 'Only the task creator can delete it',
+    'confirm_delete' => 'Are you sure you want to delete this task?',
+    'filter' => 'Filter',
+    'apply' => 'Apply',
+];
+
