@@ -13,7 +13,7 @@ class UpdateLabelRequest extends FormRequest
 
     public function rules(): array
     {
-        $labelId = $this->route('label')?->id;
+        $labelId = $this->route('id');
         
         return [
             'name' => ['required', 'string', 'max:255', 'unique:labels,name,' . $labelId],
