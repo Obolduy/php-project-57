@@ -13,6 +13,39 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .alert {
+            position: relative;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeaa7;
+        }
+
+        .alert-info {
+            color: #004085;
+            background-color: #cce5ff;
+            border-color: #b8daff;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -67,6 +100,8 @@
         <section class="bg-white dark:bg-gray-900 min-h-screen">
             <div class="grid max-w-screen-xl px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
                 <div class="col-span-full text-gray-900 dark:text-gray-100">
+                    @include('flash::message')
+
                     @yield('content')
                 </div>
             </div>
