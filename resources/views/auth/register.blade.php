@@ -1,35 +1,41 @@
 <x-guest-layout>
-    <!-- Validation Errors -->
-    <x-validation-errors />
-
-    {!! html()->form('POST', route('register'))->open() !!}
+    <form method="POST" action="{{ route('register') }}">
+        @csrf
 
         <!-- Name -->
         <div>
-            {!! html()->label(__('auth.name'), 'name')->class('block font-medium text-sm text-gray-700') !!}
+            <label class="block font-medium text-sm text-gray-700" for="name">
+                {{ __('auth.name') }}
+            </label>
 
-            {!! html()->text('name')->class('rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full')->required()->autofocus() !!}
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="name" type="text" name="name" required="required" autofocus="autofocus">
         </div>
 
         <!-- Email Address -->
         <div class="mt-4">
-            {!! html()->label(__('auth.email'), 'email')->class('block font-medium text-sm text-gray-700') !!}
+            <label class="block font-medium text-sm text-gray-700" for="email">
+                {{ __('auth.email') }}
+            </label>
 
-            {!! html()->email('email')->class('rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full')->required() !!}
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="email" type="email" name="email" required="required">
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            {!! html()->label(__('auth.password'), 'password')->class('block font-medium text-sm text-gray-700') !!}
+            <label class="block font-medium text-sm text-gray-700" for="password">
+                {{ __('auth.password') }}
+            </label>
 
-            {!! html()->password('password')->class('rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full')->required()->attribute('autocomplete', 'new-password') !!}
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="new-password">
         </div>
 
         <!-- Confirm Password -->
         <div class="mt-4">
-            {!! html()->label(__('auth.confirm_password'), 'password_confirmation')->class('block font-medium text-sm text-gray-700') !!}
+            <label class="block font-medium text-sm text-gray-700" for="password_confirmation">
+                {{ __('auth.confirm_password') }}
+            </label>
 
-            {!! html()->password('password_confirmation')->class('rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full')->required() !!}
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="password_confirmation" type="password" name="password_confirmation" required="required">
         </div>
 
         <div class="flex items-center justify-end mt-4">
@@ -37,8 +43,9 @@
                 {{ __('auth.already_registered') }}
             </a>
 
-            {!! html()->submit(__('auth.register'))->class('inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4') !!}
+            <button type="submit" class="inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">
+                {{ __('auth.register') }}
+            </button>
         </div>
-
-    {!! html()->form()->close() !!}
+    </form>
 </x-guest-layout>

@@ -2,34 +2,42 @@
     <!-- Validation Errors -->
     <x-validation-errors />
 
-    {!! html()->form('POST', route('password.store'))->open() !!}
+    <form method="POST" action="{{ route('password.store') }}">
+        @csrf
 
-        {!! html()->hidden('token', $request->route('token')) !!}
+        <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
         <!-- Email Address -->
         <div>
-            {!! html()->label(__('Email'), 'email')->class('block font-medium text-sm text-gray-700') !!}
+            <label class="block font-medium text-sm text-gray-700" for="email">
+                {{ __('Email') }}
+            </label>
 
-            {!! html()->email('email', old('email', $request->email))->class('rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full')->required()->autofocus()->attribute('autocomplete', 'username') !!}
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="email" type="email" name="email" value="{{ old('email', $request->email) }}" required="required" autofocus="autofocus" autocomplete="username">
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            {!! html()->label(__('Password'), 'password')->class('block font-medium text-sm text-gray-700') !!}
+            <label class="block font-medium text-sm text-gray-700" for="password">
+                {{ __('Password') }}
+            </label>
 
-            {!! html()->password('password')->class('rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full')->required()->attribute('autocomplete', 'new-password') !!}
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="new-password">
         </div>
 
         <!-- Confirm Password -->
         <div class="mt-4">
-            {!! html()->label(__('Confirm Password'), 'password_confirmation')->class('block font-medium text-sm text-gray-700') !!}
+            <label class="block font-medium text-sm text-gray-700" for="password_confirmation">
+                {{ __('Confirm Password') }}
+            </label>
 
-            {!! html()->password('password_confirmation')->class('rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full')->required()->attribute('autocomplete', 'new-password') !!}
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="password_confirmation" type="password" name="password_confirmation" required="required" autocomplete="new-password">
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            {!! html()->submit(__('Reset Password'))->class('inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded') !!}
+            <button type="submit" class="inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                {{ __('Reset Password') }}
+            </button>
         </div>
-
-    {!! html()->form()->close() !!}
+    </form>
 </x-guest-layout>
