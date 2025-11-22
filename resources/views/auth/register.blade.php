@@ -1,7 +1,5 @@
 <x-guest-layout>
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{{ __('auth.register_header') }}</h2>
-
-    <x-validation-errors />
+    <!--   -->
 
     <form method="POST" action="{{ route('register') }}">
         @csrf

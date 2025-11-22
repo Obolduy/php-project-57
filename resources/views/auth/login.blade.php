@@ -1,9 +1,7 @@
 <x-guest-layout>
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{{ __('auth.login') }}</h2>
-
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <x-validation-errors />
+    <!--   -->
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
@@ -44,13 +42,6 @@
             <button type="submit" class="inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-3">
                 {{ __('auth.log_in') }}
             </button>
-        </div>
-
-        <div class="mt-6 text-center">
-            <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('auth.dont_have_account') }}</span>
-            <a href="{{ route('register') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 font-medium ml-1">
-                {{ __('auth.register') }}
-            </a>
         </div>
     </form>
 </x-guest-layout>
