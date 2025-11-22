@@ -8,6 +8,6 @@ class TaskStatusDTO extends AbstractDTO
 {
     public function __construct(
         public ?string $name = null,
-    ) {}
+    ) {
+    }
 }
-

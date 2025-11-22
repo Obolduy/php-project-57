@@ -9,7 +9,8 @@ readonly class DeleteTaskAction
 {
     public function __construct(
         private TaskRepository $taskRepository
-    ) {}
+    ) {
+    }
 
     public function execute(Task $task, int $currentUserId): bool
     {

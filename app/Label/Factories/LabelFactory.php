@@ -13,4 +13,3 @@ class LabelFactory extends AbstractFactory
         return new LabelDTO();
     }
 }
-

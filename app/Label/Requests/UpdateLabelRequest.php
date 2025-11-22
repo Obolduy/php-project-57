@@ -14,11 +14,17 @@ class UpdateLabelRequest extends FormRequest
     public function rules(): array
     {
         $labelId = $this->route('id');
-        
+
         return [
             'name' => ['required', 'string', 'max:255', 'unique:labels,name,' . $labelId],
             'description' => ['nullable', 'string'],
         ];
     }
-}
 
+    public function messages(): array
+    {
+        return [
+            'name.unique' => __('labels.already_exists'),
+        ];
+    }
+}

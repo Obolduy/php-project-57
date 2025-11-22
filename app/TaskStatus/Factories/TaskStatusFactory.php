@@ -13,4 +13,3 @@ class TaskStatusFactory extends AbstractFactory
         return new TaskStatusDTO();
     }
 }
-

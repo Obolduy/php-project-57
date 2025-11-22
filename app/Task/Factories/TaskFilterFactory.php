@@ -11,9 +11,12 @@ class TaskFilterFactory
     {
         return new TaskFilterDTO(
             statusId: $request->input('filter.status_id') ? (int) $request->input('filter.status_id') : null,
-            createdById: $request->input('filter.created_by_id') ? (int) $request->input('filter.created_by_id') : null,
-            assignedToId: $request->input('filter.assigned_to_id') ? (int) $request->input('filter.assigned_to_id') : null,
+            createdById: $request->input('filter.created_by_id')
+                ? (int) $request->input('filter.created_by_id')
+                : null,
+            assignedToId: $request->input('filter.assigned_to_id')
+                ? (int) $request->input('filter.assigned_to_id')
+                : null,
         );
     }
 }
-

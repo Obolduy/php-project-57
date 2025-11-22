@@ -10,7 +10,8 @@ readonly class CreateTaskAction
 {
     public function __construct(
         private TaskRepository $taskRepository
-    ) {}
+    ) {
+    }
 
     public function execute(TaskDTO $dto, int $createdById): Task
     {

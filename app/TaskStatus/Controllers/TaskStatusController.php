@@ -29,8 +29,10 @@ class TaskStatusController extends Controller
         return view('task_statuses.create');
     }
 
-    public function store(StoreTaskStatusRequest $request, CreateTaskStatusAction $createTaskStatusAction): RedirectResponse
-    {
+    public function store(
+        StoreTaskStatusRequest $request,
+        CreateTaskStatusAction $createTaskStatusAction
+    ): RedirectResponse {
         /** @var TaskStatusDTO $dto */
         $dto = TaskStatusFactory::fromRequestValidated($request);
         $createTaskStatusAction->execute($dto);

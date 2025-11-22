@@ -21,3 +21,4 @@ class LabelFactory extends Factory
     }
 }
 
+

@@ -10,7 +10,8 @@ readonly class CreateTaskStatusAction
 {
     public function __construct(
         private TaskStatusRepository $taskStatusRepository
-    ) {}
+    ) {
+    }
 
     public function execute(TaskStatusDTO $dto): TaskStatus
     {

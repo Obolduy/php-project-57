@@ -17,4 +17,3 @@ class UserRepository
         return User::find($id);
     }
 }
-

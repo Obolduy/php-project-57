@@ -26,4 +26,3 @@ class Label extends Model
         return $this->belongsToMany(Task::class);
     }
 }
-

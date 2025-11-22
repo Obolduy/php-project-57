@@ -8,6 +8,6 @@ readonly class TaskFilterDTO
         public ?int $statusId = null,
         public ?int $createdById = null,
         public ?int $assignedToId = null,
-    ) {}
+    ) {
+    }
 }
-

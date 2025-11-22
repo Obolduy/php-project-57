@@ -13,4 +13,3 @@ class TaskFactory extends AbstractFactory
         return new TaskDTO();
     }
 }
-

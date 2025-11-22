@@ -37,4 +37,3 @@ class TaskStatusRepository
         return $taskStatus->tasks()->exists();
     }
 }
-

@@ -19,5 +19,7 @@ return [
     'deleted' => 'Label successfully deleted',
     'cannot_delete' => 'Cannot delete label that is associated with tasks',
     'confirm_delete' => 'Are you sure you want to delete this label?',
+    'already_exists' => 'A label with this name already exists',
 ];
+
 

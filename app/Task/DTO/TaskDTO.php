@@ -12,6 +12,6 @@ class TaskDTO extends AbstractDTO
         public ?int $statusId = null,
         public ?int $assignedToId = null,
         public ?array $labels = null,
-    ) {}
+    ) {
+    }
 }
-

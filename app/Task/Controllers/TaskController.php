@@ -113,8 +113,11 @@ class TaskController extends Controller
             ->with('success', __('tasks.updated'));
     }
 
-    public function destroy(int $id, TaskRepository $taskRepository, DeleteTaskAction $deleteTaskAction): RedirectResponse
-    {
+    public function destroy(
+        int $id,
+        TaskRepository $taskRepository,
+        DeleteTaskAction $deleteTaskAction
+    ): RedirectResponse {
         $task = $taskRepository->findById($id);
 
         if (!$task) {

@@ -60,4 +60,3 @@ abstract class AbstractFactory
         return $class;
     }
 }
-

@@ -9,7 +9,8 @@ readonly class DeleteLabelAction
 {
     public function __construct(
         private LabelRepository $labelRepository
-    ) {}
+    ) {
+    }
 
     public function execute(Label $label): bool
     {

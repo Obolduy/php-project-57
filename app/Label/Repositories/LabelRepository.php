@@ -37,4 +37,3 @@ class LabelRepository
         return $label->tasks()->exists();
     }
 }
-

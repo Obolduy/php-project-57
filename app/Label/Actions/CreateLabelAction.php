@@ -10,7 +10,8 @@ readonly class CreateLabelAction
 {
     public function __construct(
         private LabelRepository $labelRepository
-    ) {}
+    ) {
+    }
 
     public function execute(LabelDTO $dto): Label
     {

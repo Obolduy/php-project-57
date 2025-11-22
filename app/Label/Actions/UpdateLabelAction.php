@@ -10,7 +10,8 @@ readonly class UpdateLabelAction
 {
     public function __construct(
         private LabelRepository $labelRepository
-    ) {}
+    ) {
+    }
 
     public function execute(Label $label, LabelDTO $dto): bool
     {

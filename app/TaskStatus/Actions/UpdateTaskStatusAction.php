@@ -10,7 +10,8 @@ readonly class UpdateTaskStatusAction
 {
     public function __construct(
         private TaskStatusRepository $taskStatusRepository
-    ) {}
+    ) {
+    }
 
     public function execute(TaskStatus $taskStatus, TaskStatusDTO $dto): bool
     {
