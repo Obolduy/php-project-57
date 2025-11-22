@@ -24,6 +24,17 @@ RUN npm run build
 
 RUN > database/database.sqlite
 
+# Create necessary directories if they don't exist
+RUN mkdir -p /app/storage/logs \
+    /app/storage/framework/sessions \
+    /app/storage/framework/views \
+    /app/storage/framework/cache \
+    /app/bootstrap/cache
+
+# Set proper permissions for Laravel
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+RUN chmod -R 775 /app/storage /app/bootstrap/cache
+
 # Copy nginx config
 COPY docker/nginx/default.conf /etc/nginx/sites-available/default
 RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
@@ -50,4 +61,4 @@ stdout_logfile=/var/log/nginx.out.log" > /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
 
-CMD ["bash", "-c", "php artisan migrate --force && /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"]
+CMD ["bash", "-c", "php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force && /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"]
