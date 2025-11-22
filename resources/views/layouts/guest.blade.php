@@ -1,35 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-param" content="_token" />
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <title>{{ __('welcome.app_name') }}</title>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-            <!-- Flash Messages -->
-            <div class="w-full sm:max-w-md mt-6">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-white dark:bg-gray-900">
+    <div id="app" class="min-h-screen flex flex-col">
+        <header class="fixed w-full top-0 z-50 bg-white dark:bg-gray-900">
+            <nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900 shadow-md">
+                <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
+                    <a href="{{ route('home') }}" class="flex items-center">
+                        <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">{{ __('welcome.app_name') }}</span>
+                    </a>
+
+                    <div class="flex items-center lg:order-2">
+                        <a href="{{ route('login') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            {{ __('welcome.login') }}
+                        </a>
+                        <a href="{{ route('register') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+                            {{ __('welcome.register') }}
+                        </a>
+                    </div>
+
+                    <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1">
+                        <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                            <li>
+                                <a href="{{ route('tasks.index') }}" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
+                                    {{ __('welcome.tasks') }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('task_statuses.index') }}" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
+                                    {{ __('welcome.statuses') }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('labels.index') }}" class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
+                                    {{ __('welcome.labels') }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <section class="bg-white dark:bg-gray-900 min-h-screen flex items-center justify-center pt-20">
+            <div class="w-full max-w-md px-4">
                 @include('flash::message')
-            </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
+                <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-8 mt-6">
+                    {{ $slot }}
+                </div>
             </div>
-        </div>
-    </body>
+        </section>
+    </div>
+</body>
 </html>

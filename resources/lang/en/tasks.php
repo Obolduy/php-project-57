@@ -4,7 +4,7 @@ return [
     'title' => 'Tasks',
     'menu' => 'Tasks',
     'create' => 'Create task',
-    'edit' => 'Edit',
+    'edit' => 'Edit task',
     'update' => 'Update',
     'delete' => 'Delete',
     'cancel' => 'Cancel',
@@ -25,5 +25,8 @@ return [
     'confirm_delete' => 'Are you sure you want to delete this task?',
     'filter' => 'Filter',
     'apply' => 'Apply',
+    'labels' => 'Labels',
+    'select_status' => 'Select status',
+    'back' => 'Back',
 ];
 

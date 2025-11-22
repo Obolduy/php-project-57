@@ -3,6 +3,7 @@
 return [
     'app_name' => 'Task Manager',
     'login' => 'Login',
+    'logout' => 'Logout',
     'register' => 'Register',
     'tasks' => 'Tasks',
     'statuses' => 'Statuses',

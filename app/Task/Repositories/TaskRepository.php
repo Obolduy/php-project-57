@@ -4,11 +4,11 @@ namespace App\Task\Repositories;
 
 use App\Task\DTO\TaskFilterDTO;
 use App\Task\Models\Task;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class TaskRepository
 {
-    public function getAll(?TaskFilterDTO $filter = null): Collection
+    public function getAll(?TaskFilterDTO $filter = null): LengthAwarePaginator
     {
         return Task::query()
             ->when($filter?->statusId, function ($query) use ($filter) {
@@ -21,7 +21,7 @@ class TaskRepository
                 $query->where('assigned_to_id', $filter->assignedToId);
             })
             ->with(['status', 'creator', 'assignedTo', 'labels'])
-            ->get();
+            ->paginate(15);
     }
 
     public function findById(int $id): ?Task

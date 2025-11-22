@@ -3,6 +3,7 @@
 return [
     'app_name' => 'Менеджер задач',
     'login' => 'Вход',
+    'logout' => 'Выход',
     'register' => 'Регистрация',
     'tasks' => 'Задачи',
     'statuses' => 'Статусы',
