@@ -6,68 +6,50 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <div class="mb-4">
-            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <!-- Name -->
+        <div>
+            <label class="block font-medium text-sm text-gray-700" for="name">
                 {{ __('auth.name') }}
             </label>
-            <input id="name"
-                   type="text"
-                   name="name"
-                   value="{{ old('name') }}"
-                   required
-                   autofocus
-                   autocomplete="name"
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="name" type="text" name="name" required="required" autofocus="autofocus">
         </div>
 
-        <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <!-- Email Address -->
+        <div class="mt-4">
+            <label class="block font-medium text-sm text-gray-700" for="email">
                 {{ __('auth.email') }}
             </label>
-            <input id="email"
-                   type="email"
-                   name="email"
-                   value="{{ old('email') }}"
-                   required
-                   autocomplete="username"
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="email" type="email" name="email" required="required">
         </div>
 
-        <div class="mb-4">
-            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <!-- Password -->
+        <div class="mt-4">
+            <label class="block font-medium text-sm text-gray-700" for="password">
                 {{ __('auth.password') }}
             </label>
-            <input id="password"
-                   type="password"
-                   name="password"
-                   required
-                   autocomplete="new-password"
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="new-password">
         </div>
 
-        <div class="mb-4">
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <!-- Confirm Password -->
+        <div class="mt-4">
+            <label class="block font-medium text-sm text-gray-700" for="password_confirmation">
                 {{ __('auth.confirm_password') }}
             </label>
-            <input id="password_confirmation"
-                   type="password"
-                   name="password_confirmation"
-                   required
-                   autocomplete="new-password"
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+
+            <input class="rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full" id="password_confirmation" type="password" name="password_confirmation" required="required">
         </div>
 
-        <div class="flex items-center justify-end mt-6">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full">
+        <div class="flex items-center justify-end mt-4">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                {{ __('auth.already_registered') }}
+            </a>
+
+            <button type="submit" class="inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">
                 {{ __('auth.register') }}
             </button>
-        </div>
-
-        <div class="mt-6 text-center">
-            <span class="text-sm text-gray-600 dark:text-gray-400">{{ __('auth.already_registered') }}</span>
-            <a href="{{ route('login') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 font-medium ml-1">
-                {{ __('auth.log_in') }}
-            </a>
         </div>
     </form>
 </x-guest-layout>

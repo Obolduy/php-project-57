@@ -7,6 +7,9 @@ validate:
 lint:
 	composer exec --verbose phpcs -- --standard=PSR12 app
 
+fix:
+	./vendor/bin/phpcbf --standard=PSR12 app/
+
 test:
 	composer exec --verbose phpunit
 
