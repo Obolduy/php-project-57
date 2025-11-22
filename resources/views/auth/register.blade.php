@@ -1,5 +1,7 @@
 <x-guest-layout>
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{{ __('auth.register') }}</h2>
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{{ __('auth.register_header') }}</h2>
+
+    <x-validation-errors />
 
     <form method="POST" action="{{ route('register') }}">
         @csrf
@@ -8,63 +10,51 @@
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {{ __('auth.name') }}
             </label>
-            <input id="name" 
-                   type="text" 
-                   name="name" 
-                   value="{{ old('name') }}" 
-                   required 
-                   autofocus 
+            <input id="name"
+                   type="text"
+                   name="name"
+                   value="{{ old('name') }}"
+                   required
+                   autofocus
                    autocomplete="name"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            @error('name')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
         </div>
 
         <div class="mb-4">
             <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {{ __('auth.email') }}
             </label>
-            <input id="email" 
-                   type="email" 
-                   name="email" 
-                   value="{{ old('email') }}" 
-                   required 
+            <input id="email"
+                   type="email"
+                   name="email"
+                   value="{{ old('email') }}"
+                   required
                    autocomplete="username"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            @error('email')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
         </div>
 
         <div class="mb-4">
             <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {{ __('auth.password') }}
             </label>
-            <input id="password" 
-                   type="password" 
-                   name="password" 
-                   required 
+            <input id="password"
+                   type="password"
+                   name="password"
+                   required
                    autocomplete="new-password"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            @error('password')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
         </div>
 
         <div class="mb-4">
             <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {{ __('auth.confirm_password') }}
             </label>
-            <input id="password_confirmation" 
-                   type="password" 
-                   name="password_confirmation" 
-                   required 
+            <input id="password_confirmation"
+                   type="password"
+                   name="password_confirmation"
+                   required
                    autocomplete="new-password"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            @error('password_confirmation')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
         </div>
 
         <div class="flex items-center justify-end mt-6">

@@ -3,6 +3,8 @@
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <x-validation-errors />
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -18,9 +20,6 @@
                    autofocus 
                    autocomplete="username"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            @error('email')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
         </div>
 
         <div class="mb-4">
@@ -33,9 +32,6 @@
                    required 
                    autocomplete="current-password"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            @error('password')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
         </div>
 
         <div class="mb-4">
