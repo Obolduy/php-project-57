@@ -1,38 +1,25 @@
 <x-guest-layout>
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">{{ __('auth.reset_password') }}</h2>
-
-    <div class="mb-6 text-sm text-gray-600 dark:text-gray-400">
+    <div class="mb-4 text-sm text-gray-600">
         {{ __('auth.reset_password_text') }}
     </div>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <!-- Validation Errors -->
     <x-validation-errors />
 
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
+    {!! html()->form('POST', route('password.email'))->open() !!}
 
-        <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {{ __('auth.email') }}
-            </label>
-            <input id="email" 
-                   type="email" 
-                   name="email" 
-                   value="{{ old('email') }}" 
-                   required 
-                   autofocus
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <!-- Email Address -->
+        <div>
+            {!! html()->label(__('auth.email'), 'email')->class('block font-medium text-sm text-gray-700') !!}
+
+            {!! html()->email('email', old('email'))->class('rounded-md shadow-sm border-gray-300 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 block mt-1 w-full')->required()->autofocus() !!}
         </div>
 
-        <div class="flex items-center justify-between mt-6">
-            <a href="{{ route('login') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">
-                {{ __('auth.back_to_login') }}
-            </a>
-
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                {{ __('auth.email_password_reset_link') }}
-            </button>
+        <div class="flex items-center justify-end mt-4">
+            {!! html()->submit(__('auth.email_password_reset_link'))->class('inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded') !!}
         </div>
-    </form>
+
+    {!! html()->form()->close() !!}
 </x-guest-layout>

@@ -88,11 +88,11 @@
             </nav>
         </header>
 
-        <section class="bg-white dark:bg-gray-900 min-h-screen flex items-center justify-center pt-20">
+        <section class="bg-gray-100 min-h-screen flex items-center justify-center pt-20">
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                @include('flash::message')
-
                 <h2 class="text-center"><a href="{{ route('home') }}">{{ __('welcome.app_name') }}</a></h2>
+
+                <!--   -->
 
                 {{ $slot }}
             </div>
