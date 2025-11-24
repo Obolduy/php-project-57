@@ -10,16 +10,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $statuses = [
-            ['name' => 'новый', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'в работе', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'на тестировании', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'завершен', 'created_at' => now(), 'updated_at' => now()],
-        ];
-
-        foreach ($statuses as $status) {
-            DB::table('task_statuses')->insertOrIgnore($status);
-        }
+//        $statuses = [
+//            ['name' => 'новый', 'created_at' => now(), 'updated_at' => now()],
+//            ['name' => 'в работе', 'created_at' => now(), 'updated_at' => now()],
+//            ['name' => 'на тестировании', 'created_at' => now(), 'updated_at' => now()],
+//            ['name' => 'завершен', 'created_at' => now(), 'updated_at' => now()],
+//        ];
+//
+//        foreach ($statuses as $status) {
+//            DB::table('task_statuses')->insertOrIgnore($status);
+//        }
     }
 
     /**
@@ -27,11 +27,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::table('task_statuses')->whereIn('name', [
-            'новый',
-            'в работе',
-            'на тестировании',
-            'завершен',
-        ])->delete();
+//        DB::table('task_statuses')->whereIn('name', [
+//            'новый',
+//            'в работе',
+//            'на тестировании',
+//            'завершен',
+//        ])->delete();
     }
 };
