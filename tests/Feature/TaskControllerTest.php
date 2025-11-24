@@ -338,7 +338,7 @@ test('task assignee can be changed', function () {
     $status = TaskStatus::factory()->create();
     $assignee1 = User::factory()->create();
     $assignee2 = User::factory()->create();
-    
+
     $task = Task::factory()->create([
         'status_id' => $status->id,
         'created_by_id' => $user->id,
@@ -364,7 +364,7 @@ test('task assignee can be removed', function () {
     $user = User::factory()->create();
     $status = TaskStatus::factory()->create();
     $assignee = User::factory()->create();
-    
+
     $task = Task::factory()->create([
         'status_id' => $status->id,
         'created_by_id' => $user->id,
@@ -518,4 +518,3 @@ test('tasks index without filters shows all tasks', function () {
     $response->assertSee('Task 1');
     $response->assertSee('Task 2');
 });
-

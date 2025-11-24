@@ -196,4 +196,3 @@ return [
         'password_confirmation' => 'подтверждение пароля',
     ],
 ];
-

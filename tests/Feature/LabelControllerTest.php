@@ -202,7 +202,7 @@ test('label cannot be deleted if it has associated tasks', function () {
     $user = User::factory()->create();
     $status = TaskStatus::factory()->create();
     $label = Label::factory()->create(['name' => 'Bug']);
-    
+
     $task = Task::factory()->create([
         'status_id' => $status->id,
         'created_by_id' => $user->id,
@@ -235,7 +235,7 @@ test('task can be created with labels', function () {
         ]);
 
     $response->assertRedirect('/tasks');
-    
+
     $task = Task::where('name', 'New Task')->first();
     expect($task)->not->toBeNull();
     expect($task->labels)->toHaveCount(2);
@@ -254,7 +254,7 @@ test('task can be created without labels', function () {
         ]);
 
     $response->assertRedirect('/tasks');
-    
+
     $task = Task::where('name', 'New Task')->first();
     expect($task)->not->toBeNull();
     expect($task->labels)->toHaveCount(0);
@@ -282,7 +282,7 @@ test('task labels can be updated', function () {
         ]);
 
     $response->assertRedirect('/tasks');
-    
+
     $task->refresh();
     expect($task->labels)->toHaveCount(2);
     expect($task->labels->pluck('id')->toArray())->toContain($label2->id, $label3->id);
@@ -309,9 +309,7 @@ test('task labels can be removed', function () {
         ]);
 
     $response->assertRedirect('/tasks');
-    
+
     $task->refresh();
     expect($task->labels)->toHaveCount(0);
 });
-
-

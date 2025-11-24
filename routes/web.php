@@ -47,4 +47,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy')->where('id', '[0-9]+');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

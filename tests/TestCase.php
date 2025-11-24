@@ -9,13 +9,13 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create fake Vite manifest for tests
         $buildPath = public_path('build');
         if (!is_dir($buildPath)) {
             mkdir($buildPath, 0755, true);
         }
-        
+
         $manifestPath = $buildPath . '/manifest.json';
         if (!file_exists($manifestPath)) {
             file_put_contents($manifestPath, json_encode([

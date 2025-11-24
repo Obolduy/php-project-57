@@ -29,4 +29,3 @@ return [
     'select_status' => 'Select status',
     'back' => 'Back',
 ];
-

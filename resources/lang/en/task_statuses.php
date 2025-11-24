@@ -19,8 +19,3 @@ return [
     'cannot_delete' => 'Cannot delete status that is associated with tasks',
     'confirm_delete' => 'Are you sure you want to delete this status?',
 ];
-
-
-
-
-

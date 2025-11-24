@@ -12,4 +12,3 @@ return [
     'description' => 'Это простой менеджер задач на Laravel',
     'learn_more' => 'Нажми меня',
 ];
-

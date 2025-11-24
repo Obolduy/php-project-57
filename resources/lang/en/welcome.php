@@ -12,4 +12,3 @@ return [
     'description' => 'This is a simple task manager on Laravel',
     'learn_more' => 'Click me',
 ];
-
