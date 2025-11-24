@@ -16,10 +16,10 @@ class UpdateLabelRequest extends FormRequest
      */
     public function rules(): array
     {
-        $labelId = $this->route('id');
+        $label = $this->route('label');
 
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:labels,name,' . $labelId],
+            'name' => ['required', 'string', 'max:255', 'unique:labels,name,' . $label->id],
             'description' => ['nullable', 'string'],
         ];
     }
