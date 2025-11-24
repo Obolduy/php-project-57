@@ -69,10 +69,12 @@ abstract class AbstractFactory
             $lcFirstKey = lcfirst($keyString);
 
             if (method_exists(static::class, 'set' . $keyString)) {
+                /** @phpstan-ignore-next-line */
                 $value = static::{'set' . $keyString}($value);
             }
 
             if (property_exists($class, $lcFirstKey)) {
+                /** @phpstan-ignore-next-line */
                 $class->{$lcFirstKey} = $value;
             }
         }

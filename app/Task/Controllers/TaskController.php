@@ -70,7 +70,7 @@ class TaskController extends Controller
     {
         $task = $taskRepository->findById($id);
 
-        if (!$task) {
+        if ($task === null) {
             abort(404);
         }
 
@@ -86,7 +86,7 @@ class TaskController extends Controller
     ): ViewFactory|ViewContract {
         $task = $taskRepository->findById($id);
 
-        if (!$task) {
+        if ($task === null) {
             abort(404);
         }
 
@@ -105,7 +105,7 @@ class TaskController extends Controller
     ): RedirectResponse {
         $task = $taskRepository->findById($id);
 
-        if (!$task) {
+        if ($task === null) {
             abort(404);
         }
 
@@ -126,7 +126,7 @@ class TaskController extends Controller
     ): RedirectResponse {
         $task = $taskRepository->findById($id);
 
-        if (!$task) {
+        if ($task === null) {
             abort(404);
         }
 

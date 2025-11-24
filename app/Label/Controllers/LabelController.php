@@ -45,7 +45,7 @@ class LabelController extends Controller
     {
         $label = $labelRepository->findById($id);
 
-        if (!$label) {
+        if ($label === null) {
             abort(404);
         }
 
@@ -60,7 +60,7 @@ class LabelController extends Controller
     ): RedirectResponse {
         $label = $labelRepository->findById($id);
 
-        if (!$label) {
+        if ($label === null) {
             abort(404);
         }
 
@@ -81,7 +81,7 @@ class LabelController extends Controller
     ): RedirectResponse {
         $label = $labelRepository->findById($id);
 
-        if (!$label) {
+        if ($label === null) {
             abort(404);
         }
 

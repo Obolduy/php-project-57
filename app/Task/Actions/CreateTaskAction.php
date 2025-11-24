@@ -25,7 +25,7 @@ readonly class CreateTaskAction
 
         $task = $this->taskRepository->create($data);
 
-        if ($dto->labels) {
+        if ($dto->labels !== null && $dto->labels !== []) {
             $this->taskRepository->syncLabels($task, $dto->labels);
         }
 

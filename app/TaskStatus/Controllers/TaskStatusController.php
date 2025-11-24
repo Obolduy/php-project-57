@@ -46,7 +46,7 @@ class TaskStatusController extends Controller
     {
         $taskStatus = $taskStatusRepository->findById($id);
 
-        if (!$taskStatus) {
+        if ($taskStatus === null) {
             abort(404);
         }
 
@@ -61,7 +61,7 @@ class TaskStatusController extends Controller
     ): RedirectResponse {
         $taskStatus = $taskStatusRepository->findById($id);
 
-        if (!$taskStatus) {
+        if ($taskStatus === null) {
             abort(404);
         }
 
@@ -82,7 +82,7 @@ class TaskStatusController extends Controller
     ): RedirectResponse {
         $taskStatus = $taskStatusRepository->findById($id);
 
-        if (!$taskStatus) {
+        if ($taskStatus === null) {
             abort(404);
         }
 
