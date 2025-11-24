@@ -8,6 +8,7 @@ use App\TaskStatus\Actions\DeleteTaskStatusAction;
 use App\TaskStatus\Actions\UpdateTaskStatusAction;
 use App\TaskStatus\DTO\TaskStatusDTO;
 use App\TaskStatus\Factories\TaskStatusFactory;
+use App\TaskStatus\Models\TaskStatus;
 use App\TaskStatus\Repositories\TaskStatusRepository;
 use App\TaskStatus\Requests\StoreTaskStatusRequest;
 use App\TaskStatus\Requests\UpdateTaskStatusRequest;
@@ -17,6 +18,11 @@ use Illuminate\Http\RedirectResponse;
 
 class TaskStatusController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index']);
+    }
+
     public function index(TaskStatusRepository $taskStatusRepository): ViewFactory|ViewContract
     {
         $taskStatuses = $taskStatusRepository->getAll();
@@ -42,29 +48,16 @@ class TaskStatusController extends Controller
             ->with('success', __('task_statuses.created'));
     }
 
-    public function edit(int $id, TaskStatusRepository $taskStatusRepository): ViewFactory|ViewContract
+    public function edit(TaskStatus $taskStatus): ViewFactory|ViewContract
     {
-        $taskStatus = $taskStatusRepository->findById($id);
-
-        if ($taskStatus === null) {
-            abort(404);
-        }
-
         return view('task_statuses.edit', compact('taskStatus'));
     }
 
     public function update(
         UpdateTaskStatusRequest $request,
-        int $id,
-        TaskStatusRepository $taskStatusRepository,
+        TaskStatus $taskStatus,
         UpdateTaskStatusAction $updateTaskStatusAction
     ): RedirectResponse {
-        $taskStatus = $taskStatusRepository->findById($id);
-
-        if ($taskStatus === null) {
-            abort(404);
-        }
-
         /** @var TaskStatusDTO $dto */
         $dto = TaskStatusFactory::fromRequestValidated($request);
 
@@ -76,16 +69,9 @@ class TaskStatusController extends Controller
     }
 
     public function destroy(
-        int $id,
-        TaskStatusRepository $taskStatusRepository,
+        TaskStatus $taskStatus,
         DeleteTaskStatusAction $deleteTaskStatusAction
     ): RedirectResponse {
-        $taskStatus = $taskStatusRepository->findById($id);
-
-        if ($taskStatus === null) {
-            abort(404);
-        }
-
         $result = $deleteTaskStatusAction->execute($taskStatus);
 
         if (!$result) {

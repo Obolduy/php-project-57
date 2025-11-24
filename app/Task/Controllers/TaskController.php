@@ -10,6 +10,7 @@ use App\Task\Actions\UpdateTaskAction;
 use App\Task\DTO\TaskDTO;
 use App\Task\Factories\TaskFactory;
 use App\Task\Factories\TaskFilterFactory;
+use App\Task\Models\Task;
 use App\Task\Repositories\TaskRepository;
 use App\Task\Requests\StoreTaskRequest;
 use App\Task\Requests\UpdateTaskRequest;
@@ -23,6 +24,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
     public function index(
         Request $request,
         TaskRepository $taskRepository,
@@ -66,29 +72,20 @@ class TaskController extends Controller
             ->with('success', __('tasks.created'));
     }
 
-    public function show(int $id, TaskRepository $taskRepository): ViewFactory|ViewContract
+    public function show(Task $task): ViewFactory|ViewContract
     {
-        $task = $taskRepository->findById($id);
-
-        if ($task === null) {
-            abort(404);
-        }
+        $task->load(['status', 'creator', 'assignedTo', 'labels']);
 
         return view('tasks.show', compact('task'));
     }
 
     public function edit(
-        int $id,
-        TaskRepository $taskRepository,
+        Task $task,
         TaskStatusRepository $taskStatusRepository,
         UserRepository $userRepository,
         LabelRepository $labelRepository
     ): ViewFactory|ViewContract {
-        $task = $taskRepository->findById($id);
-
-        if ($task === null) {
-            abort(404);
-        }
+        $task->load(['status', 'creator', 'assignedTo', 'labels']);
 
         $statuses = $taskStatusRepository->getAll();
         $users = $userRepository->getAll();
@@ -99,16 +96,9 @@ class TaskController extends Controller
 
     public function update(
         UpdateTaskRequest $request,
-        int $id,
-        TaskRepository $taskRepository,
+        Task $task,
         UpdateTaskAction $updateTaskAction
     ): RedirectResponse {
-        $task = $taskRepository->findById($id);
-
-        if ($task === null) {
-            abort(404);
-        }
-
         /** @var TaskDTO $dto */
         $dto = TaskFactory::fromRequestValidated($request);
 
@@ -120,16 +110,9 @@ class TaskController extends Controller
     }
 
     public function destroy(
-        int $id,
-        TaskRepository $taskRepository,
+        Task $task,
         DeleteTaskAction $deleteTaskAction
     ): RedirectResponse {
-        $task = $taskRepository->findById($id);
-
-        if ($task === null) {
-            abort(404);
-        }
-
         $userId = Auth::id();
 
         if (!is_int($userId)) {

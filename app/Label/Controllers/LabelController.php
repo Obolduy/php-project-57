@@ -8,6 +8,7 @@ use App\Label\Actions\DeleteLabelAction;
 use App\Label\Actions\UpdateLabelAction;
 use App\Label\DTO\LabelDTO;
 use App\Label\Factories\LabelFactory;
+use App\Label\Models\Label;
 use App\Label\Repositories\LabelRepository;
 use App\Label\Requests\StoreLabelRequest;
 use App\Label\Requests\UpdateLabelRequest;
@@ -17,6 +18,11 @@ use Illuminate\Http\RedirectResponse;
 
 class LabelController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index']);
+    }
+
     public function index(LabelRepository $labelRepository): ViewFactory|ViewContract
     {
         $labels = $labelRepository->getAll();
@@ -41,29 +47,16 @@ class LabelController extends Controller
             ->with('success', __('labels.created'));
     }
 
-    public function edit(int $id, LabelRepository $labelRepository): ViewFactory|ViewContract
+    public function edit(Label $label): ViewFactory|ViewContract
     {
-        $label = $labelRepository->findById($id);
-
-        if ($label === null) {
-            abort(404);
-        }
-
         return view('labels.edit', compact('label'));
     }
 
     public function update(
         UpdateLabelRequest $request,
-        int $id,
-        LabelRepository $labelRepository,
+        Label $label,
         UpdateLabelAction $updateLabelAction
     ): RedirectResponse {
-        $label = $labelRepository->findById($id);
-
-        if ($label === null) {
-            abort(404);
-        }
-
         /** @var LabelDto $dto */
         $dto = LabelFactory::fromRequestValidated($request);
 
@@ -75,16 +68,9 @@ class LabelController extends Controller
     }
 
     public function destroy(
-        int $id,
-        LabelRepository $labelRepository,
+        Label $label,
         DeleteLabelAction $deleteLabelAction
     ): RedirectResponse {
-        $label = $labelRepository->findById($id);
-
-        if ($label === null) {
-            abort(404);
-        }
-
         $result = $deleteLabelAction->execute($label);
 
         if (!$result) {
