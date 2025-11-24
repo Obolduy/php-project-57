@@ -17,7 +17,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         $user = $this->user();
         $userId = $user?->id;
-        
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => [

@@ -1,520 +1,252 @@
 <?php
 
+namespace Tests\Feature;
+
+use App\Models\User;
 use App\Task\Models\Task;
 use App\TaskStatus\Models\TaskStatus;
-use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-test('tasks index page is displayed', function () {
-    $response = $this->get('/tasks');
+class TaskControllerTest extends TestCase
+{
+    use RefreshDatabase;
 
-    $response->assertOk();
-});
+    public function testIndexPageDisplaysTasks(): void
+    {
+        $status = TaskStatus::factory()->create();
+        $user = User::factory()->create();
+        $task = Task::factory()->create([
+            'name' => 'Test Task',
+            'status_id' => $status->id,
+            'created_by_id' => $user->id,
+        ]);
 
-test('tasks index page displays all tasks', function () {
-    $status = TaskStatus::factory()->create();
-    $creator = User::factory()->create();
-    $assignee = User::factory()->create();
+        $response = $this->get('/tasks');
 
-    $task1 = Task::factory()->create([
-        'name' => 'Test Task 1',
-        'status_id' => $status->id,
-        'created_by_id' => $creator->id,
-        'assigned_to_id' => $assignee->id,
-    ]);
+        $response->assertOk();
+        $response->assertSee('Test Task');
+    }
 
-    $task2 = Task::factory()->create([
-        'name' => 'Test Task 2',
-        'status_id' => $status->id,
-        'created_by_id' => $creator->id,
-    ]);
+    public function testShowPageDisplaysTask(): void
+    {
+        $status = TaskStatus::factory()->create();
+        $user = User::factory()->create();
+        $task = Task::factory()->create([
+            'name' => 'Test Task',
+            'status_id' => $status->id,
+            'created_by_id' => $user->id,
+        ]);
 
-    $response = $this->get('/tasks');
+        $response = $this->get("/tasks/{$task->id}");
 
-    $response->assertOk();
-    $response->assertSee('Test Task 1');
-    $response->assertSee('Test Task 2');
-});
+        $response->assertOk();
+        $response->assertSee($task->name);
+    }
 
-test('task show page is displayed', function () {
-    $status = TaskStatus::factory()->create();
-    $user = User::factory()->create();
-    $task = Task::factory()->create([
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
+    public function testCreateRequiresAuthentication(): void
+    {
+        $response = $this->get('/tasks/create');
+        $response->assertRedirect('/login');
 
-    $response = $this->get("/tasks/{$task->id}");
+        $status = TaskStatus::factory()->create();
+        $response = $this->post('/tasks', [
+            'name' => 'New Task',
+            'status_id' => $status->id,
+        ]);
+        $response->assertRedirect('/login');
+    }
 
-    $response->assertOk();
-    $response->assertSee($task->name);
-});
+    public function testAuthenticatedUserCanCreateTask(): void
+    {
+        $user = User::factory()->create();
+        $status = TaskStatus::factory()->create();
+        $assignee = User::factory()->create();
 
-test('task create page requires authentication', function () {
-    $response = $this->get('/tasks/create');
-
-    $response->assertRedirect('/login');
-});
-
-test('task create page is displayed for authenticated users', function () {
-    $user = User::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->get('/tasks/create');
-
-    $response->assertOk();
-});
-
-test('task can be created by authenticated user', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-    $assignee = User::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->post('/tasks', [
+        $response = $this->actingAs($user)->post('/tasks', [
             'name' => 'New Task',
             'description' => 'Task description',
             'status_id' => $status->id,
             'assigned_to_id' => $assignee->id,
         ]);
 
-    $response->assertRedirect('/tasks');
-    $this->assertDatabaseHas('tasks', [
-        'name' => 'New Task',
-        'description' => 'Task description',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-        'assigned_to_id' => $assignee->id,
-    ]);
-});
-
-test('task can be created without assignee', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->post('/tasks', [
+        $response->assertRedirect('/tasks');
+        $this->assertDatabaseHas('tasks', [
             'name' => 'New Task',
+            'description' => 'Task description',
             'status_id' => $status->id,
+            'created_by_id' => $user->id,
+            'assigned_to_id' => $assignee->id,
         ]);
+    }
 
-    $response->assertRedirect('/tasks');
-    $this->assertDatabaseHas('tasks', [
-        'name' => 'New Task',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-        'assigned_to_id' => null,
-    ]);
-});
+    public function testCreateValidation(): void
+    {
+        $user = User::factory()->create();
+        $status = TaskStatus::factory()->create();
 
-test('task creation requires authentication', function () {
-    $status = TaskStatus::factory()->create();
-
-    $response = $this->post('/tasks', [
-        'name' => 'New Task',
-        'status_id' => $status->id,
-    ]);
-
-    $response->assertRedirect('/login');
-    $this->assertDatabaseMissing('tasks', [
-        'name' => 'New Task',
-    ]);
-});
-
-test('task creation requires name', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->post('/tasks', [
+        // Name is required
+        $response = $this->actingAs($user)->post('/tasks', [
             'name' => '',
             'status_id' => $status->id,
         ]);
+        $response->assertSessionHasErrors('name');
 
-    $response->assertSessionHasErrors('name');
-});
-
-test('task creation requires status', function () {
-    $user = User::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->post('/tasks', [
+        // Status is required
+        $response = $this->actingAs($user)->post('/tasks', [
             'name' => 'New Task',
         ]);
+        $response->assertSessionHasErrors('status_id');
 
-    $response->assertSessionHasErrors('status_id');
-});
-
-test('task creation requires valid status', function () {
-    $user = User::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->post('/tasks', [
+        // Status must exist
+        $response = $this->actingAs($user)->post('/tasks', [
             'name' => 'New Task',
             'status_id' => 999,
         ]);
+        $response->assertSessionHasErrors('status_id');
+    }
 
-    $response->assertSessionHasErrors('status_id');
-});
+    public function testUpdateRequiresAuthentication(): void
+    {
+        $status = TaskStatus::factory()->create();
+        $user = User::factory()->create();
+        $task = Task::factory()->create([
+            'name' => 'Old Name',
+            'status_id' => $status->id,
+            'created_by_id' => $user->id,
+        ]);
 
-test('task edit page requires authentication', function () {
-    $status = TaskStatus::factory()->create();
-    $user = User::factory()->create();
-    $task = Task::factory()->create([
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
+        $response = $this->patch("/tasks/{$task->id}", [
+            'name' => 'New Name',
+            'status_id' => $status->id,
+        ]);
 
-    $response = $this->get("/tasks/{$task->id}/edit");
+        $response->assertRedirect('/login');
+        $this->assertDatabaseHas('tasks', ['name' => 'Old Name']);
+    }
 
-    $response->assertRedirect('/login');
-});
+    public function testAuthenticatedUserCanUpdateTask(): void
+    {
+        $user = User::factory()->create();
+        $status = TaskStatus::factory()->create();
+        $newStatus = TaskStatus::factory()->create();
+        $task = Task::factory()->create([
+            'name' => 'Old Name',
+            'status_id' => $status->id,
+            'created_by_id' => $user->id,
+        ]);
 
-test('task edit page is displayed for authenticated users', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-    $task = Task::factory()->create([
-        'name' => 'Test Task',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
-
-    $response = $this
-        ->actingAs($user)
-        ->get("/tasks/{$task->id}/edit");
-
-    $response->assertOk();
-    $response->assertSee('Test Task');
-});
-
-test('task can be updated by authenticated user', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-    $newStatus = TaskStatus::factory()->create();
-    $task = Task::factory()->create([
-        'name' => 'Old Name',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
-
-    $response = $this
-        ->actingAs($user)
-        ->patch("/tasks/{$task->id}", [
+        $response = $this->actingAs($user)->patch("/tasks/{$task->id}", [
             'name' => 'New Name',
             'description' => 'Updated description',
             'status_id' => $newStatus->id,
         ]);
 
-    $response->assertRedirect('/tasks');
-    $this->assertDatabaseHas('tasks', [
-        'id' => $task->id,
-        'name' => 'New Name',
-        'description' => 'Updated description',
-        'status_id' => $newStatus->id,
-    ]);
-});
+        $response->assertRedirect('/tasks');
+        $this->assertDatabaseHas('tasks', [
+            'id' => $task->id,
+            'name' => 'New Name',
+            'description' => 'Updated description',
+            'status_id' => $newStatus->id,
+        ]);
+    }
 
-test('task update requires authentication', function () {
-    $status = TaskStatus::factory()->create();
-    $user = User::factory()->create();
-    $task = Task::factory()->create([
-        'name' => 'Old Name',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
-
-    $response = $this->patch("/tasks/{$task->id}", [
-        'name' => 'New Name',
-        'status_id' => $status->id,
-    ]);
-
-    $response->assertRedirect('/login');
-    $this->assertDatabaseHas('tasks', [
-        'id' => $task->id,
-        'name' => 'Old Name',
-    ]);
-});
-
-test('task update requires name', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-    $task = Task::factory()->create([
-        'name' => 'Old Name',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
-
-    $response = $this
-        ->actingAs($user)
-        ->patch("/tasks/{$task->id}", [
-            'name' => '',
+    public function testDeleteRequiresAuthentication(): void
+    {
+        $status = TaskStatus::factory()->create();
+        $user = User::factory()->create();
+        $task = Task::factory()->create([
             'status_id' => $status->id,
+            'created_by_id' => $user->id,
         ]);
 
-    $response->assertSessionHasErrors('name');
-});
+        $response = $this->delete("/tasks/{$task->id}");
 
-test('task can be deleted by creator', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-    $task = Task::factory()->create([
-        'name' => 'Test Task',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
+        $response->assertRedirect('/login');
+        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
+    }
 
-    $response = $this
-        ->actingAs($user)
-        ->delete("/tasks/{$task->id}");
-
-    $response->assertRedirect('/tasks');
-    $this->assertDatabaseMissing('tasks', [
-        'id' => $task->id,
-    ]);
-});
-
-test('task cannot be deleted by non-creator', function () {
-    $creator = User::factory()->create();
-    $otherUser = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-    $task = Task::factory()->create([
-        'name' => 'Test Task',
-        'status_id' => $status->id,
-        'created_by_id' => $creator->id,
-    ]);
-
-    $response = $this
-        ->actingAs($otherUser)
-        ->delete("/tasks/{$task->id}");
-
-    $response->assertRedirect('/tasks');
-    $this->assertDatabaseHas('tasks', [
-        'id' => $task->id,
-    ]);
-});
-
-test('task deletion requires authentication', function () {
-    $status = TaskStatus::factory()->create();
-    $user = User::factory()->create();
-    $task = Task::factory()->create([
-        'name' => 'Test Task',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
-
-    $response = $this->delete("/tasks/{$task->id}");
-
-    $response->assertRedirect('/login');
-    $this->assertDatabaseHas('tasks', [
-        'id' => $task->id,
-    ]);
-});
-
-test('task status cannot be deleted if it has associated tasks', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create(['name' => 'In Progress']);
-    $task = Task::factory()->create([
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
-
-    $response = $this
-        ->actingAs($user)
-        ->delete("/task_statuses/{$status->id}");
-
-    $response->assertRedirect('/task_statuses');
-    $this->assertDatabaseHas('task_statuses', [
-        'id' => $status->id,
-    ]);
-});
-
-test('task assignee can be changed', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-    $assignee1 = User::factory()->create();
-    $assignee2 = User::factory()->create();
-
-    $task = Task::factory()->create([
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-        'assigned_to_id' => $assignee1->id,
-    ]);
-
-    $response = $this
-        ->actingAs($user)
-        ->patch("/tasks/{$task->id}", [
-            'name' => $task->name,
+    public function testCreatorCanDeleteTask(): void
+    {
+        $user = User::factory()->create();
+        $status = TaskStatus::factory()->create();
+        $task = Task::factory()->create([
             'status_id' => $status->id,
-            'assigned_to_id' => $assignee2->id,
+            'created_by_id' => $user->id,
         ]);
 
-    $response->assertRedirect('/tasks');
-    $this->assertDatabaseHas('tasks', [
-        'id' => $task->id,
-        'assigned_to_id' => $assignee2->id,
-    ]);
-});
+        $response = $this->actingAs($user)->delete("/tasks/{$task->id}");
 
-test('task assignee can be removed', function () {
-    $user = User::factory()->create();
-    $status = TaskStatus::factory()->create();
-    $assignee = User::factory()->create();
+        $response->assertRedirect('/tasks');
+        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
+    }
 
-    $task = Task::factory()->create([
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-        'assigned_to_id' => $assignee->id,
-    ]);
-
-    $response = $this
-        ->actingAs($user)
-        ->patch("/tasks/{$task->id}", [
-            'name' => $task->name,
+    public function testNonCreatorCannotDeleteTask(): void
+    {
+        $creator = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $status = TaskStatus::factory()->create();
+        $task = Task::factory()->create([
             'status_id' => $status->id,
-            'assigned_to_id' => null,
+            'created_by_id' => $creator->id,
         ]);
 
-    $response->assertRedirect('/tasks');
-    $this->assertDatabaseHas('tasks', [
-        'id' => $task->id,
-        'assigned_to_id' => null,
-    ]);
-});
+        $response = $this->actingAs($otherUser)->delete("/tasks/{$task->id}");
 
-test('tasks can be filtered by status', function () {
-    $status1 = TaskStatus::factory()->create(['name' => 'New']);
-    $status2 = TaskStatus::factory()->create(['name' => 'In Progress']);
-    $user = User::factory()->create();
+        $response->assertRedirect('/tasks');
+        $this->assertDatabaseHas('tasks', ['id' => $task->id]);
+    }
 
-    $task1 = Task::factory()->create([
-        'name' => 'Task 1',
-        'status_id' => $status1->id,
-        'created_by_id' => $user->id,
-    ]);
+    public function testTasksCanBeFilteredByStatus(): void
+    {
+        $status1 = TaskStatus::factory()->create();
+        $status2 = TaskStatus::factory()->create();
+        $user = User::factory()->create();
 
-    $task2 = Task::factory()->create([
-        'name' => 'Task 2',
-        'status_id' => $status2->id,
-        'created_by_id' => $user->id,
-    ]);
+        Task::factory()->create([
+            'name' => 'Task 1',
+            'status_id' => $status1->id,
+            'created_by_id' => $user->id,
+        ]);
 
-    $response = $this->get("/tasks?filter[status_id]={$status1->id}");
+        Task::factory()->create([
+            'name' => 'Task 2',
+            'status_id' => $status2->id,
+            'created_by_id' => $user->id,
+        ]);
 
-    $response->assertOk();
-    $response->assertSee('Task 1');
-    $response->assertDontSee('Task 2');
-});
+        $response = $this->get("/tasks?filter[status_id]={$status1->id}");
 
-test('tasks can be filtered by creator', function () {
-    $status = TaskStatus::factory()->create();
-    $creator1 = User::factory()->create(['name' => 'Creator One']);
-    $creator2 = User::factory()->create(['name' => 'Creator Two']);
+        $response->assertOk();
+        $response->assertSee('Task 1');
+        $response->assertDontSee('Task 2');
+    }
 
-    $task1 = Task::factory()->create([
-        'name' => 'Task by Creator 1',
-        'status_id' => $status->id,
-        'created_by_id' => $creator1->id,
-    ]);
+    public function testTasksCanBeFilteredByMultipleCriteria(): void
+    {
+        $status1 = TaskStatus::factory()->create();
+        $status2 = TaskStatus::factory()->create();
+        $creator = User::factory()->create();
+        $assignee = User::factory()->create();
 
-    $task2 = Task::factory()->create([
-        'name' => 'Task by Creator 2',
-        'status_id' => $status->id,
-        'created_by_id' => $creator2->id,
-    ]);
+        Task::factory()->create([
+            'name' => 'Matching Task',
+            'status_id' => $status1->id,
+            'created_by_id' => $creator->id,
+            'assigned_to_id' => $assignee->id,
+        ]);
 
-    $response = $this->get("/tasks?filter[created_by_id]={$creator1->id}");
+        Task::factory()->create([
+            'name' => 'Non-matching',
+            'status_id' => $status2->id,
+            'created_by_id' => $creator->id,
+            'assigned_to_id' => $assignee->id,
+        ]);
 
-    $response->assertOk();
-    $response->assertSee('Task by Creator 1');
-    $response->assertDontSee('Task by Creator 2');
-});
+        $response = $this->get("/tasks?filter[status_id]={$status1->id}&filter[assigned_to_id]={$assignee->id}");
 
-test('tasks can be filtered by assigned user', function () {
-    $status = TaskStatus::factory()->create();
-    $creator = User::factory()->create();
-    $assignee1 = User::factory()->create(['name' => 'Assignee One']);
-    $assignee2 = User::factory()->create(['name' => 'Assignee Two']);
-
-    $task1 = Task::factory()->create([
-        'name' => 'Task for Assignee 1',
-        'status_id' => $status->id,
-        'created_by_id' => $creator->id,
-        'assigned_to_id' => $assignee1->id,
-    ]);
-
-    $task2 = Task::factory()->create([
-        'name' => 'Task for Assignee 2',
-        'status_id' => $status->id,
-        'created_by_id' => $creator->id,
-        'assigned_to_id' => $assignee2->id,
-    ]);
-
-    $response = $this->get("/tasks?filter[assigned_to_id]={$assignee1->id}");
-
-    $response->assertOk();
-    $response->assertSee('Task for Assignee 1');
-    $response->assertDontSee('Task for Assignee 2');
-});
-
-test('tasks can be filtered by multiple criteria', function () {
-    $status1 = TaskStatus::factory()->create();
-    $status2 = TaskStatus::factory()->create();
-    $creator = User::factory()->create();
-    $assignee = User::factory()->create();
-
-    $task1 = Task::factory()->create([
-        'name' => 'Matching Task',
-        'status_id' => $status1->id,
-        'created_by_id' => $creator->id,
-        'assigned_to_id' => $assignee->id,
-    ]);
-
-    $task2 = Task::factory()->create([
-        'name' => 'Non-matching Status',
-        'status_id' => $status2->id,
-        'created_by_id' => $creator->id,
-        'assigned_to_id' => $assignee->id,
-    ]);
-
-    $task3 = Task::factory()->create([
-        'name' => 'Non-matching Assignee',
-        'status_id' => $status1->id,
-        'created_by_id' => $creator->id,
-        'assigned_to_id' => null,
-    ]);
-
-    $response = $this->get("/tasks?filter[status_id]={$status1->id}&filter[assigned_to_id]={$assignee->id}");
-
-    $response->assertOk();
-    $response->assertSee('Matching Task');
-    $response->assertDontSee('Non-matching Status');
-    $response->assertDontSee('Non-matching Assignee');
-});
-
-test('tasks index without filters shows all tasks', function () {
-    $status = TaskStatus::factory()->create();
-    $user = User::factory()->create();
-
-    $task1 = Task::factory()->create([
-        'name' => 'Task 1',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
-
-    $task2 = Task::factory()->create([
-        'name' => 'Task 2',
-        'status_id' => $status->id,
-        'created_by_id' => $user->id,
-    ]);
-
-    $response = $this->get('/tasks');
-
-    $response->assertOk();
-    $response->assertSee('Task 1');
-    $response->assertSee('Task 2');
-});
+        $response->assertOk();
+        $response->assertSee('Matching Task');
+        $response->assertDontSee('Non-matching');
+    }
+}

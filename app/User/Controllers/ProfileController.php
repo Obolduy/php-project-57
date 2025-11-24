@@ -28,11 +28,11 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-        
+
         if ($user === null) {
             return redirect()->route('login');
         }
-        
+
         $user->fill($request->validated());
 
         if ($user->isDirty('email')) {
@@ -54,7 +54,7 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
-        
+
         if ($user === null) {
             return redirect()->route('login');
         }

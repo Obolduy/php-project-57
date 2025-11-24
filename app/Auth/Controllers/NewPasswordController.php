@@ -43,7 +43,7 @@ class NewPasswordController extends Controller
                 if (!is_string($password)) {
                     return;
                 }
-                
+
                 $user->forceFill([
                     'password' => Hash::make($password),
                     'remember_token' => Str::random(60),
@@ -54,7 +54,7 @@ class NewPasswordController extends Controller
         );
 
         $statusString = is_string($status) ? $status : '';
-        
+
         return $status == Password::PASSWORD_RESET
                     ? redirect()->route('login')->with('status', __($statusString))
                     : back()->withInput($request->only('email'))

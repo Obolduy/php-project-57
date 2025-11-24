@@ -21,11 +21,11 @@ class PasswordController extends Controller
         ]);
 
         $user = $request->user();
-        
+
         if ($user === null) {
             return redirect()->route('login');
         }
-        
+
         if (!is_array($validated) || !isset($validated['password']) || !is_string($validated['password'])) {
             return back()->withErrors(['password' => 'Invalid password']);
         }

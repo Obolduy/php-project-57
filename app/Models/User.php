@@ -11,7 +11,6 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * @use HasFactory<UserFactory>
- * 
  * @phpstan-consistent-constructor
  */
 class User extends Authenticatable // хак, чтобы не падал стан, который ищет класс именно по этому пути

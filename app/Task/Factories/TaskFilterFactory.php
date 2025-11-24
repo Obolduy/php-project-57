@@ -12,7 +12,7 @@ class TaskFilterFactory
         $statusId = $request->input('filter.status_id');
         $createdById = $request->input('filter.created_by_id');
         $assignedToId = $request->input('filter.assigned_to_id');
-        
+
         return new TaskFilterDTO(
             statusId: $statusId && is_numeric($statusId) ? (int) $statusId : null,
             createdById: $createdById && is_numeric($createdById) ? (int) $createdById : null,
