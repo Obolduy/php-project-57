@@ -9,14 +9,14 @@ class TaskFilterFactory
 {
     public static function fromRequest(Request $request): TaskFilterDTO
     {
+        $statusId = $request->input('filter.status_id');
+        $createdById = $request->input('filter.created_by_id');
+        $assignedToId = $request->input('filter.assigned_to_id');
+        
         return new TaskFilterDTO(
-            statusId: $request->input('filter.status_id') ? (int) $request->input('filter.status_id') : null,
-            createdById: $request->input('filter.created_by_id')
-                ? (int) $request->input('filter.created_by_id')
-                : null,
-            assignedToId: $request->input('filter.assigned_to_id')
-                ? (int) $request->input('filter.assigned_to_id')
-                : null,
+            statusId: $statusId && is_numeric($statusId) ? (int) $statusId : null,
+            createdById: $createdById && is_numeric($createdById) ? (int) $createdById : null,
+            assignedToId: $assignedToId && is_numeric($assignedToId) ? (int) $assignedToId : null,
         );
     }
 }

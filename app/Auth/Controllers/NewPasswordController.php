@@ -39,8 +39,13 @@ class NewPasswordController extends Controller
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user) use ($request) {
+                $password = $request->input('password');
+                if (!is_string($password)) {
+                    return;
+                }
+                
                 $user->forceFill([
-                    'password' => Hash::make($request->password),
+                    'password' => Hash::make($password),
                     'remember_token' => Str::random(60),
                 ])->save();
 
@@ -48,9 +53,11 @@ class NewPasswordController extends Controller
             }
         );
 
+        $statusString = is_string($status) ? $status : '';
+        
         return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
+                    ? redirect()->route('login')->with('status', __($statusString))
                     : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+                        ->withErrors(['email' => __($statusString)]);
     }
 }

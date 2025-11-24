@@ -6,6 +6,9 @@ use App\Framework\DTO\AbstractDTO;
 
 class TaskDTO extends AbstractDTO
 {
+    /**
+     * @param array<int>|null $labels
+     */
     public function __construct(
         public ?string $name = null,
         public ?string $description = null,

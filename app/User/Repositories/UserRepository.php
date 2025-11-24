@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository
 {
+    /**
+     * @return Collection<int, User>
+     */
     public function getAll(): Collection
     {
         return User::all();

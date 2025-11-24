@@ -53,7 +53,13 @@ class TaskController extends Controller
     {
         /** @var TaskDTO $dto */
         $dto = TaskFactory::fromRequestValidated($request);
-        $createTaskAction->execute($dto, Auth::id());
+        $userId = Auth::id();
+        
+        if (!is_int($userId)) {
+            abort(401, 'User must be authenticated');
+        }
+        
+        $createTaskAction->execute($dto, $userId);
 
         return redirect()
             ->route('tasks.index')
@@ -124,7 +130,13 @@ class TaskController extends Controller
             abort(404);
         }
 
-        $result = $deleteTaskAction->execute($task, Auth::id());
+        $userId = Auth::id();
+        
+        if (!is_int($userId)) {
+            abort(401, 'User must be authenticated');
+        }
+
+        $result = $deleteTaskAction->execute($task, $userId);
 
         if (!$result) {
             return redirect()

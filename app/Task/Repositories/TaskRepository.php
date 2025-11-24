@@ -8,17 +8,20 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class TaskRepository
 {
+    /**
+     * @phpstan-return LengthAwarePaginator<int, Task>
+     */
     public function getAll(?TaskFilterDTO $filter = null): LengthAwarePaginator
     {
         return Task::query()
-            ->when($filter?->statusId, function ($query) use ($filter) {
-                $query->where('status_id', $filter->statusId);
+            ->when($filter !== null && $filter->statusId !== null, function ($query) use ($filter) {
+                $query->where('status_id', $filter?->statusId);
             })
-            ->when($filter?->createdById, function ($query) use ($filter) {
-                $query->where('created_by_id', $filter->createdById);
+            ->when($filter !== null && $filter->createdById !== null, function ($query) use ($filter) {
+                $query->where('created_by_id', $filter?->createdById);
             })
-            ->when($filter?->assignedToId, function ($query) use ($filter) {
-                $query->where('assigned_to_id', $filter->assignedToId);
+            ->when($filter !== null && $filter->assignedToId !== null, function ($query) use ($filter) {
+                $query->where('assigned_to_id', $filter?->assignedToId);
             })
             ->with(['status', 'creator', 'assignedTo', 'labels'])
             ->paginate(15);
@@ -29,11 +32,17 @@ class TaskRepository
         return Task::with(['status', 'creator', 'assignedTo', 'labels'])->find($id);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function create(array $data): Task
     {
         return Task::create($data);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function update(Task $task, array $data): bool
     {
         return $task->update($data);
@@ -41,9 +50,12 @@ class TaskRepository
 
     public function delete(Task $task): bool
     {
-        return $task->delete();
+        return $task->delete() ?? false;
     }
 
+    /**
+     * @param array<int> $labelIds
+     */
     public function syncLabels(Task $task, array $labelIds): void
     {
         $task->labels()->sync($labelIds);
