@@ -1,7 +1,7 @@
 <?php
 
 use App\TaskStatus\Models\TaskStatus;
-use App\User\Models\User;
+use App\Models\User;
 
 test('task status index page is displayed', function () {
     $response = $this->get('/task_statuses');

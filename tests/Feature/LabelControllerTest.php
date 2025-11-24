@@ -3,7 +3,7 @@
 use App\Label\Models\Label;
 use App\Task\Models\Task;
 use App\TaskStatus\Models\TaskStatus;
-use App\User\Models\User;
+use App\Models\User;
 
 test('labels index page is displayed', function () {
     $response = $this->get('/labels');

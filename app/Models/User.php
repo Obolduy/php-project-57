@@ -1,6 +1,6 @@
 <?php
 
-namespace App\User\Models;
+namespace App\Models;
 
 use App\Task\Models\Task;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable // хак, чтобы не падал стан, который ищет класс именно по этому пути
 {
     use HasFactory;
     use Notifiable;

@@ -2,7 +2,7 @@
 
 namespace App\User\Repositories;
 
-use App\User\Models\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository

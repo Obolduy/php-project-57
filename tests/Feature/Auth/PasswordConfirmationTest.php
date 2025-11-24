@@ -1,6 +1,6 @@
 <?php
 
-use App\User\Models\User;
+use App\Models\User;
 
 test('confirm password screen can be rendered', function () {
     $user = User::factory()->create();

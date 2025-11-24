@@ -4,7 +4,7 @@ namespace App\Task\Models;
 
 use App\Label\Models\Label;
 use App\TaskStatus\Models\TaskStatus;
-use App\User\Models\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
