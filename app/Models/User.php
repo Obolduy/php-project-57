@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Task\Models\Task;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
  * @use HasFactory<UserFactory>
  * @phpstan-consistent-constructor
  */
-class User extends Authenticatable // хак, чтобы не падал стан, который ищет класс именно по этому пути
+class User extends Authenticatable implements MustVerifyEmail // хак, чтобы не падал стан, который ищет класс именно по этому пути
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
