@@ -2,6 +2,7 @@
 
 namespace App\TaskStatus\Requests;
 
+use App\TaskStatus\Models\TaskStatus;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTaskStatusRequest extends FormRequest
@@ -16,6 +17,7 @@ class UpdateTaskStatusRequest extends FormRequest
      */
     public function rules(): array
     {
+        /** @var TaskStatus $taskStatus */
         $taskStatus = $this->route('task_status');
 
         return [

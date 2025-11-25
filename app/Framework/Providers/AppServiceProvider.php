@@ -2,13 +2,20 @@
 
 namespace App\Framework\Providers;
 
+use App\Task\Models\Task;
+use App\Task\Policies\TaskPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * @var array<class-string, class-string>
      */
+    protected array $policies = [
+        Task::class => TaskPolicy::class,
+    ];
+
     public function register(): void
     {
         //
@@ -19,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::policy(Task::class, TaskPolicy::class);
     }
 }

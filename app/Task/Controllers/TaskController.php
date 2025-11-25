@@ -85,6 +85,8 @@ class TaskController extends Controller
         UserRepository $userRepository,
         LabelRepository $labelRepository
     ): ViewFactory|ViewContract {
+        $this->authorize('update', $task);
+
         $task->load(['status', 'creator', 'assignedTo', 'labels']);
 
         $statuses = $taskStatusRepository->getAll();
@@ -99,6 +101,8 @@ class TaskController extends Controller
         Task $task,
         UpdateTaskAction $updateTaskAction
     ): RedirectResponse {
+        $this->authorize('update', $task);
+
         /** @var TaskDTO $dto */
         $dto = TaskFactory::fromRequestValidated($request);
 
@@ -113,19 +117,9 @@ class TaskController extends Controller
         Task $task,
         DeleteTaskAction $deleteTaskAction
     ): RedirectResponse {
-        $userId = Auth::id();
+        $this->authorize('delete', $task);
 
-        if (!is_int($userId)) {
-            abort(401, 'User must be authenticated');
-        }
-
-        $result = $deleteTaskAction->execute($task, $userId);
-
-        if (!$result) {
-            return redirect()
-                ->route('tasks.index')
-                ->with('error', __('tasks.cannot_delete'));
-        }
+        $deleteTaskAction->execute($task);
 
         return redirect()
             ->route('tasks.index')

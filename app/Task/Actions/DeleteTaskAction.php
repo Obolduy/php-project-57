@@ -12,12 +12,8 @@ readonly class DeleteTaskAction
     ) {
     }
 
-    public function execute(Task $task, int $currentUserId): bool
+    public function execute(Task $task): bool
     {
-        if ($task->creator === null || $task->creator->id !== $currentUserId) {
-            return false;
-        }
-
         $task->labels()->detach();
 
         return $this->taskRepository->delete($task);

@@ -2,6 +2,7 @@
 
 namespace App\Label\Requests;
 
+use App\Label\Models\Label;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateLabelRequest extends FormRequest
@@ -16,6 +17,7 @@ class UpdateLabelRequest extends FormRequest
      */
     public function rules(): array
     {
+        /** @var Label $label */
         $label = $this->route('label');
 
         return [

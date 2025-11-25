@@ -193,7 +193,7 @@ class TaskControllerTest extends TestCase
 
         $response = $this->actingAs($otherUser)->delete("/tasks/{$task->id}");
 
-        $response->assertRedirect('/tasks');
+        $response->assertForbidden();
         $this->assertDatabaseHas('tasks', ['id' => $task->id]);
     }
 

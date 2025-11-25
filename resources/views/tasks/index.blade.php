@@ -80,10 +80,12 @@
                     <td class="py-3 text-gray-600 dark:text-gray-400">{{ $task->created_at->format('d.m.Y') }}</td>
                     @auth
                         <td class="py-3">
-                            <a href="{{ route('tasks.edit', $task) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                                {{ __('tasks.edit') }}
-                            </a>
-                            @if ($task->created_by_id === Auth::id())
+                            @can('update', $task)
+                                <a href="{{ route('tasks.edit', $task) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                    {{ __('tasks.edit') }}
+                                </a>
+                            @endcan
+                            @can('delete', $task)
                                 <a href="{{ route('tasks.destroy', $task) }}" 
                                    class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 ml-2"
                                    data-confirm="{{ __('tasks.confirm_delete') }}"
@@ -91,7 +93,7 @@
                                    onclick="event.preventDefault(); if(confirm(this.dataset.confirm)) { var form = document.createElement('form'); form.method = 'POST'; form.action = this.href; var csrfInput = document.createElement('input'); csrfInput.type = 'hidden'; csrfInput.name = '_token'; csrfInput.value = '{{ csrf_token() }}'; form.appendChild(csrfInput); var methodInput = document.createElement('input'); methodInput.type = 'hidden'; methodInput.name = '_method'; methodInput.value = 'DELETE'; form.appendChild(methodInput); document.body.appendChild(form); form.submit(); }">
                                     {{ __('tasks.delete') }}
                                 </a>
-                            @endif
+                            @endcan
                         </td>
                     @endauth
                 </tr>
